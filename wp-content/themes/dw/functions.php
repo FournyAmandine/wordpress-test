@@ -20,6 +20,9 @@ add_action( 'wp_enqueue_scripts', function() {
 //queue : mise en file. Prépare l'objet pour charger les éléments
 //enqueue : enlève de la file d'attente
 
+//Activer l'utilisation des vignettes (images de couverture) sur nos post_types
+
+add_theme_support( 'post-thumbnails', ['recipe'] );
 
 // enregistrer de nouveaux types de contenu qui seront stokés dans la table wp_post avec un identifiant de type spécific dans la colonne post_type
 
@@ -32,4 +35,10 @@ register_post_type('recipe', [
     'rewrite' => [
         'slug' => 'recettes'
     ],
+    'supports' => [
+        'title',
+        'editor',
+        'excerpt',
+        'thumbnail',
+    ]
 ]);
