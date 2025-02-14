@@ -1,9 +1,10 @@
 <?php get_header(); ?>
+        <aside>
+            <h2>Bienvenu sur mon site&nbsp;!</h2>
+        </aside>
        <!-- // on ouvre la boucle
         // structure de controle de contenu pour wordpress-->
         <?php if(have_posts()) : while(have_posts()) : the_post(); ?>
-
-            <h2><?= get_the_title(); ?></h2>
 
             <div><?= get_the_content(); ?></div>
         <!--on ferme la boucle-->
