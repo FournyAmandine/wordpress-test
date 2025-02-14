@@ -5,7 +5,22 @@
     <title><?= wp_title('•', false, 'right') . get_bloginfo('name') ?></title>
 </head>
 <body>
-<h1><?= get_bloginfo('name') ?></h1>
-<p><?= get_bloginfo('description') ?></p>
+    <header>
+        <h1><?= get_bloginfo('name') ?></h1>
+        <p><?= get_bloginfo('description') ?></p>
+    </header>
+    <main>
+       <!-- // on ouvre la boucle
+        // structure de controle de contenu pour wordpress-->
+        <?php if(have_posts()) : while(have_posts()) : the_post(); ?>
+
+            <h2><?= get_the_title(); ?></h2>
+
+            <div><?= get_the_content(); ?></div>
+        <!--on ferme la boucle-->
+        <?php endwhile; else: ?>
+        <p>La page est vide</p>
+        <?php endif; ?>
+    </main>
 </body>
 </html>
