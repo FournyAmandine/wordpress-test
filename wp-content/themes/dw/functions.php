@@ -23,6 +23,7 @@ add_action( 'wp_enqueue_scripts', function() {
 //Activer l'utilisation des vignettes (images de couverture) sur nos post_types
 
 add_theme_support( 'post-thumbnails', ['recipe'] );
+add_theme_support( 'post-thumbnails', ['travel'] );
 
 // enregistrer de nouveaux types de contenu qui seront stokés dans la table wp_post avec un identifiant de type spécific dans la colonne post_type
 
@@ -34,6 +35,23 @@ register_post_type('recipe', [
     'public' => true,
     'rewrite' => [
         'slug' => 'recettes'
+    ],
+    'supports' => [
+        'title',
+        'editor',
+        'excerpt',
+        'thumbnail',
+    ]
+]);
+
+register_post_type('travel', [
+    'label' => 'Voyages',
+    'description' => 'Les voyages disponibles avec les recettes incluses',
+    'menu_position' => 7,
+    'menu_icon' => 'dashicons-airplane',
+    'public' => true,
+    'rewrite' => [
+        'slug' => 'voyages'
     ],
     'supports' => [
         'title',
