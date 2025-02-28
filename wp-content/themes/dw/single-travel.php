@@ -58,6 +58,6 @@ get_header();?>
 
     <!--on ferme la boucle-->
 <?php endwhile; else: ?>
-    <p>Cette recette n'existe pas</p>
+    <p>Ce voyage n'existe pas</p>
 <?php endif; ?>
 <?php get_footer()?>
