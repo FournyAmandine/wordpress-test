@@ -1,15 +1,16 @@
 <?php
+
 add_action( 'acf/include_fields', function() {
     if ( ! function_exists( 'acf_add_local_field_group' ) ) {
         return;
     }
 
     acf_add_local_field_group( array(
-        'key' => 'group_67c17770a5f3e',
+        'key' => 'group_67c1776e73c20',
         'title' => 'Travel fields (main)',
         'fields' => array(
             array(
-                'key' => 'field_67c177702e170',
+                'key' => 'field_67c1776e33a91',
                 'label' => 'Appréciation',
                 'name' => 'rating',
                 'aria-label' => '',
@@ -23,7 +24,7 @@ add_action( 'acf/include_fields', function() {
                     'id' => '',
                 ),
                 'choices' => array(
-                    0 => '0 étoile',
+                    0 => '0 étoiles',
                     1 => '1 étoile',
                     2 => '2 étoiles',
                     3 => '3 étoiles',
@@ -40,9 +41,9 @@ add_action( 'acf/include_fields', function() {
                 'placeholder' => '',
             ),
             array(
-                'key' => 'field_67c179592e171',
+                'key' => 'field_67c1793f33a92',
                 'label' => 'Date de départ',
-                'name' => 'daparture',
+                'name' => 'departure',
                 'aria-label' => '',
                 'type' => 'date_picker',
                 'instructions' => '',
@@ -59,12 +60,12 @@ add_action( 'acf/include_fields', function() {
                 'allow_in_bindings' => 0,
             ),
             array(
-                'key' => 'field_67c179d92e172',
+                'key' => 'field_67c179d633a93',
                 'label' => 'Date de retour',
                 'name' => 'return',
                 'aria-label' => '',
                 'type' => 'date_picker',
-                'instructions' => 'Laissez vide si vous n\'êtes pas encore revenu',
+                'instructions' => 'Laissez vide si vous n\'êtes pas encore revenu.',
                 'required' => 0,
                 'conditional_logic' => 0,
                 'wrapper' => array(
@@ -78,13 +79,13 @@ add_action( 'acf/include_fields', function() {
                 'allow_in_bindings' => 0,
             ),
             array(
-                'key' => 'field_67c18e1e09b3d',
+                'key' => 'field_67c18d2924678',
                 'label' => 'Points clés',
-                'name' => 'points',
+                'name' => 'keypoints',
                 'aria-label' => '',
                 'type' => 'wysiwyg',
                 'instructions' => '',
-                'required' => 0,
+                'required' => 1,
                 'conditional_logic' => 0,
                 'wrapper' => array(
                     'width' => '',
@@ -92,20 +93,20 @@ add_action( 'acf/include_fields', function() {
                     'id' => '',
                 ),
                 'default_value' => '',
-                'allow_in_bindings' => 1,
-                'tabs' => 'all',
-                'toolbar' => 'full',
-                'media_upload' => 1,
+                'allow_in_bindings' => 0,
+                'tabs' => 'visual',
+                'toolbar' => 'basic',
+                'media_upload' => 0,
                 'delay' => 0,
             ),
             array(
-                'key' => 'field_67c18e6809b3e',
-                'label' => 'Récits',
-                'name' => 'stories',
+                'key' => 'field_67c18d9c24679',
+                'label' => 'Récit de voyage',
+                'name' => 'story',
                 'aria-label' => '',
                 'type' => 'wysiwyg',
                 'instructions' => '',
-                'required' => 0,
+                'required' => 1,
                 'conditional_logic' => 0,
                 'wrapper' => array(
                     'width' => '',
@@ -113,7 +114,7 @@ add_action( 'acf/include_fields', function() {
                     'id' => '',
                 ),
                 'default_value' => '',
-                'allow_in_bindings' => 1,
+                'allow_in_bindings' => 0,
                 'tabs' => 'all',
                 'toolbar' => 'full',
                 'media_upload' => 1,
@@ -134,31 +135,33 @@ add_action( 'acf/include_fields', function() {
         'style' => 'seamless',
         'label_placement' => 'top',
         'instruction_placement' => 'field',
-        'hide_on_screen' => '',
+        'hide_on_screen' => array(
+            0 => 'the_content',
+        ),
         'active' => true,
         'description' => '',
         'show_in_rest' => 0,
     ) );
 
     acf_add_local_field_group( array(
-        'key' => 'group_67c19063204bc',
+        'key' => 'group_67c1904255e73',
         'title' => 'Travel fields (side)',
         'fields' => array(
             array(
-                'key' => 'field_67c190631fea8',
+                'key' => 'field_67c1904262fc8',
                 'label' => 'Image sur le côté',
                 'name' => 'side_image',
                 'aria-label' => '',
                 'type' => 'image',
                 'instructions' => 'Préférez une image carrée. Un recadrage automatique aura lieu.',
-                'required' => 0,
+                'required' => 1,
                 'conditional_logic' => 0,
                 'wrapper' => array(
                     'width' => '',
                     'class' => '',
                     'id' => '',
                 ),
-                'return_format' => 'array',
+                'return_format' => 'id',
                 'library' => 'all',
                 'min_width' => 420,
                 'min_height' => 420,
@@ -182,7 +185,7 @@ add_action( 'acf/include_fields', function() {
         ),
         'menu_order' => 0,
         'position' => 'side',
-        'style' => 'default',
+        'style' => 'seamless',
         'label_placement' => 'top',
         'instruction_placement' => 'label',
         'hide_on_screen' => '',
@@ -191,4 +194,3 @@ add_action( 'acf/include_fields', function() {
         'show_in_rest' => 0,
     ) );
 } );
-
