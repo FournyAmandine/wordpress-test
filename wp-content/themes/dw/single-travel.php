@@ -122,9 +122,19 @@ get_header();?>
             <div class="travel__head">
                 <h2 class="travel__title"><?= get_the_title(); ?></h2>
                 <p class="travel__excerpt"><?= get_the_excerpt() ?></p>
-                <div class="travel__rating" data-score="<?= get_field('rating')?>">
-                    <p class="sro">Ce voyage obtient l'appréciation de <?= get_field('rating')?> étoiles sur 5</p><!--Lecteur vocaux-->
+                <div class="travel__rating" data-score="<?= $rate = get_field('rating')?>">
+                    <p class="sro">Ce voyage obtient l'appréciation de <?= $rate?> étoiles sur 5</p><!--Lecteur vocaux-->
 
+                </div>
+                <div class="travel__dates">
+                    <?php
+                    $departure = get_field('departure');
+                    $return  = get_field('return');
+                     if (get_field('return')) : ?>
+                        <p>Du <time datetime="<?= date('c', $departure); ?>"><?= date('d F Y', $departure); ?></time> au <time datetime="<?= date('c', $return); ?>"><?= date('d F Y', $return); ?></time></p>
+                    <?php else:?>
+                        <p>Depuis le <time datetime="<?= date('c', $departure); ?>"><?= date('d F Y', $departure); ?></time></p>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -136,17 +146,22 @@ get_header();?>
 
         <aside class="travel-information">
             <div class="travel__container">
-                <h3>Informations de voyages</h3>
-                <p>A compléter</p>
+                <h3>Points</h3>
+                <div class="wysiwyg">
+                    <?= get_field('points')?>
+                </div>
             </div>
             <figure class="travel__fig">
+                <?= wp_get_attachment_image( get_field('side_image'), 'travel-side') ?>
                 <?= get_the_post_thumbnail(size:'travel-side', attr: ['class'=>'travel_img'])?>
             </figure>
         </aside>
 
         <section class="travel_price">
-            <h3>Prix</h3>
-            <div><?= get_the_content(); ?></div>
+            <h3>Récit de voyages</h3>
+            <div class="story">
+                <?= get_field('stories')?>
+            </div>
         </section>
     </div>
 
