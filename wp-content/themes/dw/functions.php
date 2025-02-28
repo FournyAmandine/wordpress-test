@@ -1,5 +1,9 @@
 <?php
 
+//Charger les fichiers fields de ACF
+include_once ('fields.php');
+
+
 //Gutenberg est le nouvel éditeur de contenu propre à wordpress, il ne nous intéresse pas pour l'utilisation du thème que nous allons créer
 
 // Disable Gutenberg on the back end.
