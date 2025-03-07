@@ -57,6 +57,7 @@
             display: flex;
             flex-direction: row-reverse;
             justify-content: space-between;
+            margin-top: 20px;
         }
         .travel__ingredients {
             width: 320px;
@@ -82,12 +83,21 @@
             height: 100%;
             object-fit: cover;
         }
+        .recipe__img{
+            display: block;
+            position: absolute;
+            top:0;
+            left:0;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
         .travel__rating {
             width: 150px;
             height: 30px;
             display: block;
             position: relative;
-            background: url(/wp-content/themes/dw/resources/img/star_empty.svg);
+            background: url(/wp-content/themes/dw/ressources/img/star_empty.svg);
             background-repeat: repeat-x;
             background-position: 0 0;
         }
@@ -99,7 +109,7 @@
             left: 0;
             bottom: 0;
             width: 0;
-            background: url(/wp-content/themes/dw/resources/img/star_filled.svg);
+            background: url(/wp-content/themes/dw/ressources/img/star.svg);
             background-repeat: repeat-x;
             background-position: 0 0;
         }
@@ -117,6 +127,40 @@
         }
         .travel__rating[data-score="5"]:after {
             width: 100%;
+        }
+        .recipe__card {
+            position: relative;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.2);
+            -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 10px;
+        }
+        .recipe__fig {
+            display: block;
+            position: relative;
+            height: 0;
+            padding: 60% 0 0 0;
+            margin: 0;
+        }
+        .recipe{
+            height: 30%;
+            width: 30%;
+            text-align: center;
+        }
+        .travel__recipe{
+            color: black;
+            font-size: 18px;
+            display: block;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .travel__steps{
+            text-align: center;
         }
     </style>
 
@@ -161,6 +205,17 @@ if(have_posts()): while(have_posts()): the_post(); ?>
                 </figure>
             </aside>
 
+            <section class="recipe">
+                <h3>Recette du voyage</h3>
+                <div class="recipe__card">
+                    <header class="recipe__head">
+                        <a class="travel__recipe" href="<?=get_field('associated-recipe-link')?>"><?=get_field('associated-recipe')?></a>
+                    </header>
+                    <figure class="recipe__fig">
+                        <?= wp_get_attachment_image(get_field('recipe_image'), 'large', attr: ['class' => 'recipe__img']); ?>
+                    </figure>
+                </div>
+            </section>
             <section class="travel__steps">
                 <h3>Récit de voyage</h3>
                 <div class="wysiwyg">

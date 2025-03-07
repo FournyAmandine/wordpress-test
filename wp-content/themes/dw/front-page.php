@@ -9,17 +9,17 @@
             padding: 0;
             border: 0;
         }
-        .trips {
+        .trips, .recipes {
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
             gap: 1em;
         }
-        .trip {
+        .trip, .recipe {
             position: relative;
             width: calc((100% - 3em)/4);
         }
-        .trip__link {
+        .trip__link, .recipe__link {
             position: absolute;
             top: 0;
             right: 0;
@@ -30,10 +30,12 @@
             z-index: 1;
         }
         .trip__link:hover + .trip__card,
-        .trip__link:focus + .trip__card {
+        .trip__link:focus + .trip__card,
+        .recipe__link:hover + .recipe__card,
+        .recipe__link:focus + .recipe__card{
             transform: translate3d(0, -4px, 0);
         }
-        .trip__card {
+        .trip__card, .recipe__card {
             position: relative;
             z-index: 0;
             background: white;
@@ -46,14 +48,14 @@
             flex-direction: column-reverse;
             transition: transform 200ms ease-out;
         }
-        .trip__fig {
+        .trip__fig, .recipe__fig {
             display: block;
             position: relative;
             height: 0;
             padding: 60% 0 0 0;
             margin: 0;
         }
-        .trip__img {
+        .trip__img, .recipe__img {
             display: block;
             position: absolute;
             top: 0;
@@ -62,8 +64,15 @@
             height: 100%;
             object-fit: cover;
         }
-        .trip__head {
+        .trip__head, .recipe__head {
             padding: 1em;
+        }
+        .section--recipe{
+            margin-top: 3em;
+        }
+        .recipe__travel{
+            color: black;
+            text-decoration: none;
         }
     </style>
     <aside>
@@ -108,6 +117,38 @@
                 </article>
             <?php endwhile; else: ?>
                 <p>Je n'ai pas de voyages récents à montrer pour le moment...</p>
+            <?php endif; ?>
+        </div>
+    </section>
+    <section class="section--recipe">
+        <h2>
+            Les recettes de mes voyages
+        </h2>
+        <div class="recipes">
+            <?php
+                $recipes = new WP_Query([
+                    'post_type' => 'recipe',
+                    'order' => 'DESC',
+                    'orderby' => 'date',
+                    'posts_per_page' => 8,
+                ]);
+            if($recipes->have_posts()): while($recipes->have_posts()): $recipes->the_post(); ?>
+            <article class="recipe">
+                <a href="<?= get_the_permalink(); ?>" class="recipe__link">
+                    <span class="sro">Découvrir la recette <?= get_the_title(); ?></span>
+                </a>
+                <div class="recipe__card">
+                    <header class="recipe__head">
+                        <h3 class="recipe__title"><?=get_the_title()?></h3>
+                        <p>Associée au voyage : <a class="recipe__travel" href="<?=get_field('associated-trip-link')?>"><?=get_field('associated-trip')?></a></p>
+                    </header>
+                    <figure class="recipe__fig">
+                        <?= get_the_post_thumbnail(size: 'medium', attr: ['class' => 'recipe__img']); ?>
+                    </figure>
+                </div>
+            </article>
+            <?php endwhile; else: ?>
+                <p>Je n'ai pas de recette pour le moment</p>
             <?php endif; ?>
         </div>
     </section>

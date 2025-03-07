@@ -1,20 +1,18 @@
 <?php
 get_header(); ?>
     <style type="text/css">
-        .recipe {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: space-between;
+        .sro {
+            position: absolute;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            width: 1px;
+            margin: -1px;
+            padding: 0;
+            border: 0;
         }
 
-        .recipe_ingredients {
-            width: 320px;
-            padding: 20px;
-            background: #00d084;
-            display: flex;
-            flex-direction: column-reverse;
-        }
-        .recipe_fig{
+        .recipe_fig {
             display: block;
             position: relative;
             width: 100%;
@@ -22,7 +20,8 @@ get_header(); ?>
             padding-top: 100%;
             margin: 0;
         }
-        .recipe_img{
+
+        .recipe_img {
             display: block;
             position: absolute;
             top: 0;
@@ -31,23 +30,141 @@ get_header(); ?>
             height: 100%;
             object-fit: cover;
         }
+
+        .recipe__rating {
+            width: 150px;
+            height: 30px;
+            display: block;
+            position: relative;
+            background: url(/wp-content/themes/dw/ressources/img/cake_empty.svg);
+            background-repeat: repeat-x;
+            background-position: 0 0;
+        }
+
+        .recipe__rating:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            background: url(/wp-content/themes/dw/ressources/img/cake.svg);
+            background-repeat: repeat-x;
+            background-position: 0 0;
+        }
+
+        .recipe__rating[data-score="1"]:after {
+            width: 30px;
+        }
+
+        .recipe__rating[data-score="2"]:after {
+            width: 60px;
+        }
+
+        .recipe__rating[data-score="3"]:after {
+            width: 90px;
+        }
+
+        .recipe__rating[data-score="4"]:after {
+            width: 120px;
+        }
+
+        .recipe__rating[data-score="5"]:after {
+            width: 100%;
+        }
+
+        .recipe_fig {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 100%;
+            margin: 0;
+        }
+
+        .recipe__head {
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .recipe__container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .recipe__ingredients {
+            width: 320px;
+            padding: 20px;
+            margin-right: 3em;
+            background: #f4c152;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+        .recipe__header {
+            height: 400px;
+            width: 100%;
+            position: relative;
+            margin-bottom: 3em;
+        }
+        .recipe__back,
+        .recipe__back:before,
+        .recipe__head {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .recipe__back {
+            z-index: 0;
+            margin: 0;
+            padding: 0;
+        }
+        .recipe__back:before {
+            content: '';
+            display: block;
+            background: rgb(244, 82, 139);
+            opacity: 0.75;
+        }
+        .recipe__travel{
+            color: white;
+            font-size: 18px;
+        }
     </style>
     <!-- // on ouvre la boucle
      // structure de controle de contenu pour wordpress-->
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-    <h2><?= get_the_title(); ?></h2>
+    <header class="recipe__header">
+        <div class="recipe__head">
+            <h2 class="recipe__title"><?= get_the_title(); ?></h2>
+            <p class="recipe__excerpt"><?= get_the_excerpt(); ?></p>
+            <div class="recipe__rating" data-score="<?= $rating = get_field('rating'); ?>">
+                <p class="sro">Ce voyage obtient l'appréciation de <?= $rating; ?> cakes sur 5</p>
+            </div>
+            <div>
+                <p>Cette recette est associée à ce voyage : <a class="recipe__travel" href="<?=get_field('associated-trip-link')?>"><?=get_field('associated-trip')?></a></p>
+            </div>
+        </div>
+        <div class="recipe__back">
 
-    <p><?= get_the_excerpt() ?></p>
-
-    <div class="recipe">
-        <aside class="recipe_ingredients">
+        </div>
+    </header>
+    <div class="recipe__container">
+        <aside class="recipe__ingredients">
             <div>
                 <h3>Ingrédients</h3>
-                <p>A compléter</p>
+                <p><?= get_field('ingredients') ?></p>
             </div>
             <figure class="recipe_fig">
-                <?= get_the_post_thumbnail(size:'large', attr: ['class'=>'recipe_img'])?>
+                <?= get_the_post_thumbnail(size: 'large', attr: ['class' => 'recipe_img']) ?>
             </figure>
         </aside>
 
@@ -56,7 +173,6 @@ get_header(); ?>
             <div><?= get_the_content(); ?></div>
         </section>
     </div>
-
     <!--on ferme la boucle-->
 <?php endwhile; else: ?>
     <p>Cette recette n'existe pas</p>
