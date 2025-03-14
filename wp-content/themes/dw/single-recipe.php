@@ -105,12 +105,14 @@ get_header(); ?>
             display: flex;
             flex-direction: column-reverse;
         }
+
         .recipe__header {
             height: 400px;
             width: 100%;
             position: relative;
             margin-bottom: 3em;
         }
+
         .recipe__back,
         .recipe__back:before,
         .recipe__head {
@@ -122,18 +124,21 @@ get_header(); ?>
             width: 100%;
             height: 100%;
         }
+
         .recipe__back {
             z-index: 0;
             margin: 0;
             padding: 0;
         }
+
         .recipe__back:before {
             content: '';
             display: block;
             background: rgb(244, 82, 139);
             opacity: 0.75;
         }
-        .recipe__travel{
+
+        .recipe__travel {
             color: white;
             font-size: 18px;
         }
@@ -150,7 +155,9 @@ get_header(); ?>
                 <p class="sro">Ce voyage obtient l'appréciation de <?= $rating; ?> cakes sur 5</p>
             </div>
             <div>
-                <p>Cette recette est associée à ce voyage : <a class="recipe__travel" href="<?=get_field('associated-trip-link')?>"><?=get_field('associated-trip')?></a></p>
+                <p>Cette recette est associée à ce voyage : <a class="recipe__travel"
+                                                               href="<?= get_field('associated-trip-link') ?>"><?= get_field('associated-trip') ?></a>
+                </p>
             </div>
         </div>
         <div class="recipe__back">
@@ -159,6 +166,30 @@ get_header(); ?>
     </header>
     <div class="recipe__container">
         <aside class="recipe__ingredients">
+            <section class="taxonomie">
+                <h4>Quand manger?</h4>
+                <?php if ($courses = get_the_terms(get_the_ID(), 'diet')):?>
+                    <ul>
+                        <?php foreach ($courses as $term): ?>
+                            <li><?= $term->name; ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php else: ?>
+                    <p>Aucun régime particulier</p>
+                <?php endif; ?>
+            </section>
+            <section class="taxonomie">
+                <h4>Pour quel régime?</h4>
+                <?php if ($diets = get_the_terms(get_the_ID(), 'diet')):?>
+                <ul>
+                    <?php foreach ($diets as $term): ?>
+                        <li><?= $term->name; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php else: ?>
+                <p>Aucun régime particulier</p>
+                <?php endif; ?>
+            </section>
             <div>
                 <h3>Ingrédients</h3>
                 <p><?= get_field('ingredients') ?></p>

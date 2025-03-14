@@ -12,7 +12,7 @@
         <h2 class="sro">Navigation principale</h2>
         <ul class="nav__container">
             <?php foreach (dw_get_navigation_links('header')as $link): ?>
-            <li class="nav__item">
+            <li class="nav__item nav__item--<?= $link->icon; ?>">
                 <a href="<?=$link->href;?>" class="nav__link"><?=$link->label;?></a>
             </li>
             <?php endforeach; ?>
