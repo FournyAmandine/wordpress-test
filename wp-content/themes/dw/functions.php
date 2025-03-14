@@ -68,3 +68,7 @@ register_post_type('travel', [
 add_image_size('travel-side', 420, 420); // sans recadrage
 add_image_size('travel-header', 1920, 400, true); // avec recadrage
 add_image_size('recipe-header', 1920, 400, true);
+
+//enregistrer les menus de navigation en focntion de l'endroit àù ils sont exploités
+register_nav_menu( 'header', 'Le menu de navigation principale en haut de page');
+register_nav_menu( 'footer', 'Le menu de navigation principale en fin de page');
