@@ -8,6 +8,15 @@
 <header>
     <h1><?= get_bloginfo('name') ?></h1>
     <p><?= get_bloginfo('description') ?></p>
-    <?php wp_nav_menu( ['theme_location' => 'header', 'container' => 'nav', ]);?>
+    <nav class="nav">
+        <h2 class="sro">Navigation principale</h2>
+        <ul class="nav__container">
+            <?php foreach (dw_get_navigation_links('header')as $link): ?>
+            <li class="nav__item">
+                <a href="<?=$link->href;?>" class="nav__link"><?=$link->label;?></a>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </nav>
 </header>
 <main>
