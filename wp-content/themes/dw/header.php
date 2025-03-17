@@ -8,6 +8,7 @@
 <header>
     <h1><?= get_bloginfo('name') ?></h1>
     <p><?= get_bloginfo('description') ?></p>
+    <?= get_field('option_company_name', 'option') ?>
     <nav class="nav">
         <h2 class="sro"><?=__hepl('Navigation principale')?></h2>
         <ul class="nav__container">

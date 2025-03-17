@@ -89,7 +89,7 @@
 <?php endif; ?>
     <section>
         <h2>
-            Mes voyages récents
+            <?=__hepl('Mes voyages récents')?>
         </h2>
         <div class="trips">
             <?php
