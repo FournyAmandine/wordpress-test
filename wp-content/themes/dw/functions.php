@@ -55,6 +55,22 @@ add_action('wp_enqueue_scripts', function () {
 
 add_theme_support('post-thumbnails', ['recipe', 'travel']);
 
+//Ajouter un post-type custom pour sauvegarder les messages de contact
+
+register_post_type('contact_message', [
+    'label' => 'Message de contact',
+    'description' => 'Les envois de formulaire via la page de contact',
+    'menu_position' => 10,
+    'menu_icon' => 'dashicons-email',
+    'public' => true,
+    'has_archive' => false,
+    //'show_in_nav_menus' => true,
+    'supports' => [
+        'title',
+        'editor',
+    ]
+]);
+
 // enregistrer de nouveaux types de contenu qui seront stokés dans la table wp_post avec un identifiant de type spécific dans la colonne post_type
 
 register_post_type('recipe', [
@@ -199,7 +215,7 @@ add_action('admin_post_dw_submit_contact_form', 'dw_handle_contact_form');
 require_once(__DIR__ . '/forms/ContactForm.php');
 function dw_handle_contact_form()
 {
-    $form = (new DW_Theme\Forms\ContactForm())
+    $form = (new DW_Theme\Forms\ContactForm('contact_message'))
         ->rule('firstname', 'required')
         ->rule('lastname', 'required')
         ->rule('email', 'required')

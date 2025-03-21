@@ -7,8 +7,9 @@ class ContactForm
     protected array $rules = [];
     protected array $sanitizers = [];
 
-    public function __construct()
+    public function __construct(string $post_type)
     {
+
     }
 
     public function rule(string $field, string $rule): static
@@ -47,6 +48,12 @@ class ContactForm
         // TODO.
 
         // Envoyer un mail de notification.
+        wp_insert_post([
+            'post_type' => 'contact_message',
+            'post_title' => $data['first_name'] . ' ' . $data['lastname'],
+            'post_content' => $this->generateEmailContent($data),
+            'post_status' => 'publish',
+        ]);
         wp_mail(
             to: 'toon@whitecube.be',
             subject: 'Nouveau message de contact',
@@ -126,7 +133,7 @@ class ContactForm
             .'Vous avez un nouveau message de '.$data['firstname'].' '.$data['lastname'].':'.PHP_EOL
             .$data['message'].PHP_EOL.PHP_EOL
             .'----'.PHP_EOL
-            .'Adresse mail: '.$data['firstname'];
+            .'Adresse mail: '.$data['email'];
     }
 
 }
