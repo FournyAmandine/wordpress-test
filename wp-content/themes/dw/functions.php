@@ -3,6 +3,11 @@
 //Charger les fichiers fields de ACF
 include_once('fields.php');
 
+//Vérifier si la session est active("started")
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 function hepl_trad_load_textdomain(): void
 {
@@ -91,23 +96,23 @@ register_post_type('travel', [
 ]);
 
 //Ajouter des catégories (taxonomie) sur ces post_types :
-register_taxonomy('course', ['recipe'],[
+register_taxonomy('course', ['recipe'], [
     'labels' => [
         'name' => 'Services',
         'singular_name' => 'Service'
     ],
-    'description' =>'A quel moment du repas ce plat intervient-il?',
+    'description' => 'A quel moment du repas ce plat intervient-il?',
     'public' => true,
     'hierarchical' => true,
     'tag_cloud' => false,
 ]);
 
-register_taxonomy('diet', ['recipe'],[
+register_taxonomy('diet', ['recipe'], [
     'labels' => [
         'name' => 'Régimes alimentaires',
         'singular_name' => 'Régime'
     ],
-    'description' =>'A quel type de régime appartient cette recette?',
+    'description' => 'A quel type de régime appartient cette recette?',
     'public' => true,
     'hierarchical' => true,
     'tag_cloud' => false,
@@ -157,27 +162,28 @@ function dw_get_navigation_links(string $location): array
 
 
 // Créer une fonction qui permet de créer des pages d'options ACF pour le thème :
-function create_site_options_page() {
+function create_site_options_page()
+{
     if (function_exists('acf_add_options_page')) {
         // Page principale
         acf_add_options_page([
-            'page_title'  => 'Site Options',
-            'menu_title'  => 'Site Settings',
-            'menu_slug'   => 'site-options',
-            'capability'  => 'edit_posts',
-            'redirect'    => false
+            'page_title' => 'Site Options',
+            'menu_title' => 'Site Settings',
+            'menu_slug' => 'site-options',
+            'capability' => 'edit_posts',
+            'redirect' => false
         ]);
 
         // Sous-pages
         acf_add_options_sub_page([
-            'page_title'  => 'Company Settings',
-            'menu_title'  => 'Company',
+            'page_title' => 'Company Settings',
+            'menu_title' => 'Company',
             'parent_slug' => 'site-options',
         ]);
 
         acf_add_options_sub_page([
-            'page_title'  => 'SEO Settings',
-            'menu_title'  => 'SEO',
+            'page_title' => 'SEO Settings',
+            'menu_title' => 'SEO',
             'parent_slug' => 'site-options',
         ]);
     }
@@ -189,6 +195,21 @@ add_action('acf/init', 'create_site_options_page');
 add_action('admin_post_nopriv_dw_submit_contact_form', 'dw_handle_contact_form');
 add_action('admin_post_dw_submit_contact_form', 'dw_handle_contact_form');
 
-function dw_handle_contact_form(){
-    var_dump($_POST); die();
+//Chargement de notre classe qui va gérer les formulaires
+require_once(__DIR__ . '/forms/ContactForm.php');
+function dw_handle_contact_form()
+{
+    $form = (new DW_Theme\Forms\ContactForm())
+        ->rule('firstname', 'required')
+        ->rule('lastname', 'required')
+        ->rule('email', 'required')
+        ->rule('email', 'email')
+        ->rule('message', 'required')
+        ->rule('message', 'no_test')
+        ->sanitize('firstname', 'sanitize_text_field')
+        ->sanitize('lastname', 'sanitize_text_field')
+        ->sanitize('email', 'sanitize_text_field')
+        ->sanitize('message', 'sanitize_textarea_field');
+
+    return $form->handle($_POST);
 }
