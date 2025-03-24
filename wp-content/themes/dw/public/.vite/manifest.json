@@ -1,0 +1,13 @@
+{
+  "wp-content/themes/dw/ressources/css/styles.scss": {
+    "file": "assets/css-B75te3Cg.css",
+    "src": "wp-content/themes/dw/ressources/css/styles.scss",
+    "isEntry": true
+  },
+  "wp-content/themes/dw/ressources/js/main.js": {
+    "file": "assets/js-CnMOJCjS.js",
+    "name": "js",
+    "src": "wp-content/themes/dw/ressources/js/main.js",
+    "isEntry": true
+  }
+}
