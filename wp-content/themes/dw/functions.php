@@ -31,6 +31,35 @@ function __hepl(string $translation, array $replacements = [])
     return $base;
 }
 
+function get__option($field): mixed
+{
+    return get_field($field, pll_current_language('slug'));
+}
+
+$manifestPath = get_theme_file_path('public/.vite/manifest.json');
+
+if (file_exists($manifestPath)) {
+    $manifest = json_decode(file_get_contents($manifestPath), true);
+    if (isset($manifest['wp-content/themes/dw/ressources/css/styles.scss'])) {
+        wp_enqueue_style('dw', get_theme_file_uri('public/'.$manifest['wp-content/themes/dw/ressources/css/styles.scss']['file']));
+    }
+
+    if (isset($manifest['wp-content/themes/dw/ressources/js/main.js'])){
+        wp_enqueue_script('dw', get_theme_file_uri('public/'.$manifest['wp-content/themes/dw/ressources/js/main.js']['file']), [], null, true);
+    }
+}
+
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
+remove_action('wp_head', 'wp_print_comments');
+remove_action('wp_head', 'wp_oembed_add_discovery_links');
+remove_action('wp_head', 'wp_oembed_add_host_js');
+remove_action('wp_head', 'rest_output_link_wp_head');
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'classic-theme-styles-inline-css');
+
+
+
 //Gutenberg est le nouvel éditeur de contenu propre à wordpress, il ne nous intéresse pas pour l'utilisation du thème que nous allons créer
 
 // Disable Gutenberg on the back end.
@@ -178,30 +207,28 @@ function dw_get_navigation_links(string $location): array
 
 
 // Créer une fonction qui permet de créer des pages d'options ACF pour le thème :
-function create_site_options_page()
+
+function create_site_options_page(): void
 {
     if (function_exists('acf_add_options_page')) {
         // Page principale
         acf_add_options_page([
-            'page_title' => 'Site Options',
-            'menu_title' => 'Site Settings',
-            'menu_slug' => 'site-options',
-            'capability' => 'edit_posts',
-            'redirect' => false
+            'page_title'  => 'Site Options',
+            'menu_title'  => 'Site Settings',
+            'menu_slug'   => 'site-options',
+            'capability'  => 'edit_posts',
+            'redirect'    => false
         ]);
 
-        // Sous-pages
-        acf_add_options_sub_page([
-            'page_title' => 'Company Settings',
-            'menu_title' => 'Company',
-            'parent_slug' => 'site-options',
-        ]);
-
-        acf_add_options_sub_page([
-            'page_title' => 'SEO Settings',
-            'menu_title' => 'SEO',
-            'parent_slug' => 'site-options',
-        ]);
+        foreach (['fr', 'en'] as $lang) {
+            acf_add_options_sub_page([
+                'page_title' => sprintf(__('Options du site %s', 'hepl-trad'), strtoupper($lang)),
+                'menu_title' => sprintf(__('Options du site %s', 'hepl-trad'), strtoupper($lang)),
+                'menu_slug'  => 'site-options-' . $lang,
+                'post_id'    => $lang,
+                'parent'     => 'site-options',
+            ]);
+        }
     }
 }
 

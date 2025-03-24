@@ -1,0 +1,11 @@
+.h1{
+  color: #0a4b78;
+}
+
+.header{
+  &__headline{
+    &strong{
+      font-weight: 800;
+    }
+  }
+}
