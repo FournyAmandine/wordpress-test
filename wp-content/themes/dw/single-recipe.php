@@ -104,6 +104,7 @@ get_header(); ?>
             background: #f4c152;
             display: flex;
             flex-direction: column-reverse;
+            max-height: 600px;
         }
 
         .recipe__header {
@@ -216,17 +217,20 @@ get_header(); ?>
         .related {
             background: #f1f1f1;
         }
+
         .related__container {
             display: flex;
             justify-content: flex-start;
             flex-direction: row;
             flex-wrap: wrap;
         }
+
         .recipe {
             width: 25%;
             display: block;
             position: relative;
         }
+
         .recipe__link {
             display: block;
             position: absolute;
@@ -238,6 +242,7 @@ get_header(); ?>
             height: 100%;
             z-index: 1;
         }
+
         .recipe__card {
             display: block;
             position: relative;
@@ -245,20 +250,25 @@ get_header(); ?>
             background: white;
             padding: 1em;
         }
+
         .recipe__title {
             margin: 0;
         }
+
         .recipe__fig {
             width: auto;
         }
+
         .recipe__img {
             width: 100%;
         }
+
         .sro {
             position: absolute;
             overflow: hidden;
             clip: rect(0 0 0 0);
-            height: 1px; width: 1px;
+            height: 1px;
+            width: 1px;
             margin: -1px;
             padding: 0;
             border: 0;
@@ -291,9 +301,10 @@ get_header(); ?>
                 ],
             ]);
 
-            if($recipes->have_posts()): while($recipes->have_posts()): $recipes->the_post(); ?>
+            if ($recipes->have_posts()): while ($recipes->have_posts()): $recipes->the_post(); ?>
                 <article class="recipe">
-                    <a href="<?= get_the_permalink(); ?>" class="recipe__link"><span class="sro">Voir la recette "<?= get_the_title(); ?>"</span></a>
+                    <a href="<?= get_the_permalink(); ?>" class="recipe__link"><span
+                                class="sro">Voir la recette "<?= get_the_title(); ?>"</span></a>
                     <div class="recipe__card">
                         <h3 class="recipe__title"><?= get_the_title(); ?></h3>
                         <figure class="recipe__fig">
@@ -304,4 +315,110 @@ get_header(); ?>
             <?php endwhile; endif; ?>
         </div>
     </section>
-    <?php get_footer(); ?>
+    <style>
+        .contact{
+            display: flex;
+            justify-content: center;
+            padding: 80px;
+            flex-direction: column;
+            align-items: center;
+        }
+        .contact__subtitle{
+            padding: 30px;
+        }
+        .contact__title{
+            font-size: 24px;
+        }
+        .field{
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+        }
+        .contact__right{
+            width: 50%;
+        }
+        .form__submit{
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+        }
+        button{
+            background: #f4c152;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 100px;
+        }
+    </style>
+    <section>
+        <?php
+        // On ouvre "la boucle" (The Loop), la structure de contrôle
+        // de contenu propre à Wordpress:
+        if (have_posts()): while (have_posts()): the_post(); ?>
+
+            <section class="contact">
+                <h2 class="contact__title">Contactez-nous!</h2>
+                <p class="contact__subtitle">Si vous avez des améliorations sur nos recettes, dites-le nous!</p>
+                <div class="contact__right">
+                    <?php
+                    $errors = $_SESSION['contact_form_errors'] ?? [];
+                    unset($_SESSION['contact_form_errors']);
+                    $success = $_SESSION['contact_form_success'] ?? false;
+                    unset($_SESSION['contact_form_success']);
+
+                    if ($success): ?>
+                        <div class="contact__success">
+                            <p><?= $success; ?></p>
+                        </div>
+                    <?php else: ?>
+                        <form action="<?= admin_url('admin-post.php'); ?>" method="POST" class="form">
+                            <fieldset class="form__fields">
+                                <div class="field">
+                                    <label for="firstname" class="field__label">Prénom</label>
+                                    <input type="text" name="firstname" id="firstname" class="field__input">
+                                    <?php if (isset($errors['firstname'])): ?>
+                                        <p class="field__error"><?= $errors['firstname']; ?></p>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="field">
+                                    <label for="lastname" class="field__label">Nom</label>
+                                    <input type="text" name="lastname" id="lastname" class="field__input">
+                                    <?php if (isset($errors['lastname'])): ?>
+                                        <p class="field__error"><?= $errors['lastname']; ?></p>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="field">
+                                    <label for="email" class="field__label">Adresse mail</label>
+                                    <input type="email" name="email" id="email" class="field__input">
+                                    <?php if (isset($errors['email'])): ?>
+                                        <p class="field__error"><?= $errors['email']; ?></p>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="field">
+                                    <label for="message" class="field__label">Message</label>
+                                    <textarea name="message" id="message" class="field__input"></textarea>
+                                    <?php if (isset($errors['message'])): ?>
+                                        <p class="field__error"><?= $errors['message']; ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            </fieldset>
+                            <div class="form__submit">
+                                <?php
+                                // ce champ "hidden" permet à WP d'identifier la requête et de la transmettre
+                                // à notre fonction définie dans functions.php via "add_action('admin_post_[nom-action]')"
+                                ?>
+                                <input type="hidden" name="action" value="dw_submit_contact_form">
+                                <button type="submit" class="btn">Envoyer</button>
+                            </div>
+                        </form>
+                    <?php endif; ?>
+                </div>
+            </section>
+
+        <?php
+            // On ferme "la boucle" (The Loop):
+        endwhile;
+        else: ?>
+            <p>La page est vide.</p>
+        <?php endif; ?>
+    </section>
+<?php get_footer(); ?>
